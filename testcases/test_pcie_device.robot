@@ -35,6 +35,11 @@ ${PCIEDEVICE_ENDPOINT}    /redfish/v1/Chassis/1/PCIeDevices/11
     当用户请求PCIeDevice接口
     那么@odata.id字段应匹配端点
     并且@odata.type字段应包含PCIeDevice
+验证PCIeDevice接口数据一致性
+    [Documentation]    验证多次调用PCIeDevice接口返回的数据一致（除温度和功率字段）
+    [Tags]    consistency    pcie    api
+
+    当用户多次请求PCIeDevice接口并验证数据一致性
 
 *** Keywords ***
 初始化测试环境
@@ -74,3 +79,6 @@ ${PCIEDEVICE_ENDPOINT}    /redfish/v1/Chassis/1/PCIeDevices/11
     ${odata_type}=    Get From Dictionary    ${json_data}    @odata.type
     Should Contain    ${odata_type}    PCIeDevice
     ...    msg=@odata.type字段不包含PCIeDevice
+
+当用户多次请求PCIeDevice接口并验证数据一致性
+    Validate PCIeDevice Response Consistency    ${PCIEDEVICE_ENDPOINT}    ${5}

@@ -118,3 +118,47 @@ Log All Response Fields
         Log To Console    ${key}: ${value_type} = ${value}
     END
     Log To Console    ===================\n
+
+Validate PCIeDevice Response Consistency
+    [Documentation]    验证多次调用PCIeDevice接口返回的数据一致（除温度和功率字段）
+    [Arguments]    ${endpoint}    ${num_calls}=3
+    ${first_response}=    Get Redfish Resource    ${endpoint}
+    ${first_json}=    Set Variable    ${first_response.json()}
+
+    FOR    ${index}    IN RANGE    1    ${num_calls}
+        ${response}=    Get Redfish Resource    ${endpoint}
+        ${json}=    Set Variable    ${response.json()}
+        Compare Dictionaries Except Fields    ${first_json}    ${json}    Temperature    Power
+    END
+
+Compare Dictionaries Except Fields
+    [Documentation]    比较两个字典，排除指定字段
+    [Arguments]    ${dict1}    ${dict2}    @{exclude_fields}
+    ${keys1}=    Get Dictionary Keys    ${dict1}
+    ${keys2}=    Get Dictionary Keys    ${dict2}
+
+    # 确保两个字典有相同的键（排除指定字段后）
+    ${filtered_keys1}=    Filter Keys    ${keys1}    @{exclude_fields}
+    ${filtered_keys2}=    Filter Keys    ${keys2}    @{exclude_fields}
+    Should Be Equal    ${filtered_keys1}    ${filtered_keys2}
+    ...    msg=排除字段后的键不一致
+
+    FOR    ${key}    IN    @{filtered_keys1}
+        ${value1}=    Get From Dictionary    ${dict1}    ${key}
+        ${value2}=    Get From Dictionary    ${dict2}    ${key}
+        Should Be Equal    ${value1}    ${value2}
+        ...    msg=字段 ${key} 的值不一致
+    END
+
+Filter Keys
+    [Arguments]    ${keys}    @{exclude_fields}
+    ${result}=    Create List
+    FOR    ${key}    IN    @{keys}
+        ${should_exclude}=    Set Variable    ${FALSE}
+        FOR    ${exclude}    IN    @{exclude_fields}
+            ${match}=    Run Keyword And Return Status    Should Contain    ${key}    ${exclude}
+            ${should_exclude}=    Set Variable If    ${match}    ${TRUE}    ${should_exclude}
+        END
+        Run Keyword If    "${should_exclude}" == "${FALSE}"    Append To List    ${result}    ${key}
+    END
+    RETURN    ${result}

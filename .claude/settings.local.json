@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(/c/Users/xys47339/AppData/Local/Microsoft/WindowsApps/python validate_structure.py)",
+      "Bash(robot --version)",
+      "Bash(robot simple_test.robot)",
+      "Bash(robot test_process.robot)",
+      "Bash(robot --dryrun testcases/test_pcie_device.robot)",
+      "Bash(robot run_tests.robot)",
+      "Bash(cd:*)",
+      "Bash(robot --dryrun run_tests.robot)",
+      "Bash(robot --dryrun --outputdir results testcases/run_all_tests.robot)",
+      "Bash(timeout 30 robot --outputdir results testcases/run_all_tests.robot)",
+      "Bash(robot --dryrun testcases/run_all_tests.robot)"
+    ]
+  }
+}

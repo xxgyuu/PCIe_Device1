@@ -21,7 +21,7 @@
       "Bash(cmd //c \"cd /d D:\\\\work1 && setup_and_run.bat\")",
       "Bash(cmd //c \"D:\\\\work1\\\\setup_and_run.bat\")",
       "Bash(powershell -Command \"cd 'D:\\\\work1'; cmd /c 'setup_and_run.bat'\")",
-      "Bash(bash -c \"cmd //c setup_and_run_fixed.bat\")"
+      "Bash(ls:*)"
     ]
   }
 }

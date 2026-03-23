@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.2 (Python 3.12.3 on win32)" generated="2026-03-19T18:03:45.261998" rpa="false" schemaversion="5">
+<suite id="s1" name="所有PCIeDevice测试" source="D:\work1">
+<suite id="s1-s1" name="Testcases" source="D:\work1\testcases">
+<suite id="s1-s1-s1" name="Test Pcie Device" source="D:\work1\testcases\test_pcie_device.robot">
+<kw name="初始化测试环境" type="SETUP">
+<kw name="Log To Console" owner="BuiltIn">
+<arg>开始执行PCIeDevice接口测试...</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.433062" elapsed="0.000000"/>
+</kw>
+<kw name="Create Redfish Session" owner="redfish_keywords">
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.434063" level="INFO">${auth} = ['admin', 'Password@_']</msg>
+<var>${auth}</var>
+<arg>${REDFISH_USERNAME}</arg>
+<arg>${REDFISH_PASSWORD}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.433062" elapsed="0.001001"/>
+</kw>
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-03-19T18:03:45.434063" level="INFO">Creating Session using : alias=redfish_session, url=https://172.14.8.101, headers={},                     cookies={}, auth=&lt;requests.auth.HTTPBasicAuth object at 0x000002096D37D7C0&gt;, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>redfish_session</arg>
+<arg>${REDFISH_BASE_URL}</arg>
+<arg>auth=${auth}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-03-19T18:03:45.434063" elapsed="0.000000"/>
+</kw>
+<kw name="Set Global Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.435059" level="INFO">${REDFISH_SESSION} = redfish_session</msg>
+<arg>${REDFISH_SESSION}</arg>
+<arg>redfish_session</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.434063" elapsed="0.000996"/>
+</kw>
+<doc>创建Redfish API会话</doc>
+<status status="PASS" start="2026-03-19T18:03:45.433062" elapsed="0.001997"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.435059" level="INFO">${EXPECTED_FIELDS} = ['@odata.id', '@odata.type', 'Id', 'Name', 'Description', 'Status', 'FirmwareVersion', 'Manufacturer', 'Model', 'SerialNumber', 'PartNumber']</msg>
+<arg>${EXPECTED_FIELDS}</arg>
+<arg>${EXPECTED_FIELDS}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.435059" elapsed="0.000000"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.435059" level="INFO">${EXPECTED_STATUS} = {'State': 'Enabled', 'Health': 'OK'}</msg>
+<arg>${EXPECTED_STATUS}</arg>
+<arg>${EXPECTED_STATUS}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.435059" elapsed="0.000000"/>
+</kw>
+<doc>测试套件初始化</doc>
+<status status="PASS" start="2026-03-19T18:03:45.432070" elapsed="0.002989"/>
+</kw>
+<test id="s1-s1-s1-t1" name="验证PCIeDevice接口可访问性" line="16">
+<kw name="当用户请求PCIeDevice接口">
+<kw name="Get Redfish Resource" owner="redfish_keywords">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-19T18:03:45.582165" level="INFO">GET Request : url=https://172.14.8.101/redfish/v1/Chassis/1/PCIeDevices/11 
+ path_url=/redfish/v1/Chassis/1/PCIeDevices/11 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Basic YWRtaW46UGFzc3dvcmRAXw=='} 
+ body=None 
+ </msg>
+<msg time="2026-03-19T18:03:45.582165" level="INFO">GET Response : url=https://172.14.8.101/redfish/v1/Chassis/1/PCIeDevices/11 
+ status=200, reason=OK 
+ headers={'Allow': 'GET', 'Pragma': 'no-cache', 'Cache-Control': 'no-Store,no-Cache', 'Content-Type': 'application/json', 'Date': 'Thu, 19 Mar 2026 10:06:42 GMT', 'OData-Version': '4.0', 'Content-Length': '1369', 'Accept-Ranges': 'bytes', 'Server': 'web server', 'X-Download-Options': 'noopen', 'X-Permitted-Cross-Domain-Policies': 'value', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff', 'X-XSS-Protection': 'nosniff', 'Content-Security-Policy': "default-src 'self';         script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' wss://*:* ws://*:*; img-src 'self' data:;         frame-src 'self'; font-src 'self' data:; object-src 'self'; style-src 'self' 'unsafe-inline';         frame-ancestors 'none'; worker-src blob: * 'data';", 'Strict-Transport-Security': 'value', 'X-Frame-Options': 'DENY'} 
+ body={
+  "@odata.context": "/redfish/v1/$metadata#PCIeDevice.PCIeDevice",
+  "@odata.id": "/redfish/v1/Chassis/1/PCIeDevices/11",
+  "@odata.type": "#PCIeDevice.v1_5_0.PCIeDevice",
+  "CardManufacturer": "Vastai",
+  "CardModel": "GPU-VA16-128GB-FHFL",
+  "Description": "PCIe-11",
+  "FirmwareVersion": "VA16-3.3.5R 7ba7",
+  "Id": "PCIeCard11",
+  "Links": {
+    "Chassis": [
+      {
+        "@odata.id": "/redfish/v1/Chassis/1"
+      }
+    ],
+    "PCIeFunctions": [
+      {
+        "@odata.id": "/redfish/v1/Chassis/1/PCIeDevices/11/Functions/1"
+      }
+    ]
+  },
+  "Manufacturer": "Vastai",
+  "Model": "GPU-VA16-128GB-FHFL",
+  "Name": "GPU-VA16-128GB-FHFL",
+  "Oem": {
+    "Public": {
+      "ChipManufacturer": "Vastai",
+      "ChipModel": "SV102",
+      "CompletionCode": 0,
+      "Description": "Success",
+      "DeviceLocator": "PCIe Card11",
+      "MemorySizeMiB": 131072,
+      "MezzSlot": null,
+      "PCIeCardType": "GPU",
+      "Position": 11,
+      "PowerCapacityWatts": 150,
+      "PowerWatts": 23,
+      "SlotMapping": null,
+      "SlotNumber": 11
+    }
+  },
+  "PCIeInterface": {
+    "LanesInUse": 4,
+    "MaxLanes": 4
+  },
+  "PartNumber": "PBV3XFMC8940",
+  "SerialNumber": "FCBY53700196",
+  "Status": {
+    "Health": "OK",
+    "Oem": {
+      "Public": {
+        "FaultDescription": "",
+        "Severity": "Informational"
+      }
+    },
+    "State": "Enabled"
+  }
+} 
+ </msg>
+<msg time="2026-03-19T18:03:45.582165" level="INFO">C:\Users\xys47339\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host '172.14.8.101'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-19T18:03:45.582165" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>redfish_session</arg>
+<arg>${endpoint}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.436051" elapsed="0.146114"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-03-19T18:03:45.582165" elapsed="0.000000"/>
+</return>
+<msg time="2026-03-19T18:03:45.582165" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${PCIEDEVICE_ENDPOINT}</arg>
+<doc>获取Redfish资源</doc>
+<status status="PASS" start="2026-03-19T18:03:45.436051" elapsed="0.146114"/>
+</kw>
+<kw name="Set Test Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.583166" level="INFO">${RESPONSE} = &lt;Response [200]&gt;</msg>
+<arg>${RESPONSE}</arg>
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.582165" elapsed="0.001001"/>
+</kw>
+<kw name="Log Response Details" owner="redfish_keywords">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.583166" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.583166" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>\n=== 响应详情 ===</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.583166" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>状态码: ${response.status_code}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.584159" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>响应时间: ${response.elapsed.total_seconds()}秒</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.584159" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>数据ID: ${json_data.get('Id', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.584159" elapsed="0.001001"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>名称: ${json_data.get('Name', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.585160" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>状态: ${json_data.get('Status', {}).get('State', 'N/A')}/${json_data.get('Status', {}).get('Health', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.585160" elapsed="0.000991"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>================\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.586151" elapsed="0.000000"/>
+</kw>
+<arg>${response}</arg>
+<doc>记录响应详情</doc>
+<status status="PASS" start="2026-03-19T18:03:45.583166" elapsed="0.002985"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.436051" elapsed="0.150100"/>
+</kw>
+<kw name="那么接口应返回200状态码">
+<kw name="Validate Response Status" owner="redfish_keywords">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.587148" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<arg>msg=响应状态码应为${expected_status}，实际为${response.status_code}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.586151" elapsed="0.000997"/>
+</kw>
+<arg>${RESPONSE}</arg>
+<arg>200</arg>
+<doc>验证响应状态码</doc>
+<status status="PASS" start="2026-03-19T18:03:45.586151" elapsed="0.000997"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.586151" elapsed="0.000997"/>
+</kw>
+<doc>验证PCIeDevice接口可以正常访问并返回200状态码</doc>
+<tag>api</tag>
+<tag>pcie</tag>
+<tag>smoke</tag>
+<status status="PASS" start="2026-03-19T18:03:45.435059" elapsed="0.152089"/>
+</test>
+<test id="s1-s1-s1-t2" name="验证PCIeDevice接口响应结构" line="23">
+<kw name="当用户请求PCIeDevice接口">
+<kw name="Get Redfish Resource" owner="redfish_keywords">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-19T18:03:45.611072" level="INFO">GET Request : url=https://172.14.8.101/redfish/v1/Chassis/1/PCIeDevices/11 
+ path_url=/redfish/v1/Chassis/1/PCIeDevices/11 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Basic YWRtaW46UGFzc3dvcmRAXw=='} 
+ body=None 
+ </msg>
+<msg time="2026-03-19T18:03:45.611072" level="INFO">GET Response : url=https://172.14.8.101/redfish/v1/Chassis/1/PCIeDevices/11 
+ status=200, reason=OK 
+ headers={'Allow': 'GET', 'Pragma': 'no-cache', 'Cache-Control': 'no-Store,no-Cache', 'Content-Type': 'application/json', 'Date': 'Thu, 19 Mar 2026 10:06:42 GMT', 'OData-Version': '4.0', 'Content-Length': '1369', 'Accept-Ranges': 'bytes', 'Server': 'web server', 'X-Download-Options': 'noopen', 'X-Permitted-Cross-Domain-Policies': 'value', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff', 'X-XSS-Protection': 'nosniff', 'Content-Security-Policy': "default-src 'self';         script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' wss://*:* ws://*:*; img-src 'self' data:;         frame-src 'self'; font-src 'self' data:; object-src 'self'; style-src 'self' 'unsafe-inline';         frame-ancestors 'none'; worker-src blob: * 'data';", 'Strict-Transport-Security': 'value', 'X-Frame-Options': 'DENY'} 
+ body={
+  "@odata.context": "/redfish/v1/$metadata#PCIeDevice.PCIeDevice",
+  "@odata.id": "/redfish/v1/Chassis/1/PCIeDevices/11",
+  "@odata.type": "#PCIeDevice.v1_5_0.PCIeDevice",
+  "CardManufacturer": "Vastai",
+  "CardModel": "GPU-VA16-128GB-FHFL",
+  "Description": "PCIe-11",
+  "FirmwareVersion": "VA16-3.3.5R 7ba7",
+  "Id": "PCIeCard11",
+  "Links": {
+    "Chassis": [
+      {
+        "@odata.id": "/redfish/v1/Chassis/1"
+      }
+    ],
+    "PCIeFunctions": [
+      {
+        "@odata.id": "/redfish/v1/Chassis/1/PCIeDevices/11/Functions/1"
+      }
+    ]
+  },
+  "Manufacturer": "Vastai",
+  "Model": "GPU-VA16-128GB-FHFL",
+  "Name": "GPU-VA16-128GB-FHFL",
+  "Oem": {
+    "Public": {
+      "ChipManufacturer": "Vastai",
+      "ChipModel": "SV102",
+      "CompletionCode": 0,
+      "Description": "Success",
+      "DeviceLocator": "PCIe Card11",
+      "MemorySizeMiB": 131072,
+      "MezzSlot": null,
+      "PCIeCardType": "GPU",
+      "Position": 11,
+      "PowerCapacityWatts": 150,
+      "PowerWatts": 23,
+      "SlotMapping": null,
+      "SlotNumber": 11
+    }
+  },
+  "PCIeInterface": {
+    "LanesInUse": 4,
+    "MaxLanes": 4
+  },
+  "PartNumber": "PBV3XFMC8940",
+  "SerialNumber": "FCBY53700196",
+  "Status": {
+    "Health": "OK",
+    "Oem": {
+      "Public": {
+        "FaultDescription": "",
+        "Severity": "Informational"
+      }
+    },
+    "State": "Enabled"
+  }
+} 
+ </msg>
+<msg time="2026-03-19T18:03:45.611072" level="INFO">C:\Users\xys47339\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host '172.14.8.101'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-19T18:03:45.611072" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>redfish_session</arg>
+<arg>${endpoint}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.588145" elapsed="0.022927"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-03-19T18:03:45.611072" elapsed="0.000000"/>
+</return>
+<msg time="2026-03-19T18:03:45.611072" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${PCIEDEVICE_ENDPOINT}</arg>
+<doc>获取Redfish资源</doc>
+<status status="PASS" start="2026-03-19T18:03:45.588145" elapsed="0.022927"/>
+</kw>
+<kw name="Set Test Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.611072" level="INFO">${RESPONSE} = &lt;Response [200]&gt;</msg>
+<arg>${RESPONSE}</arg>
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.611072" elapsed="0.000000"/>
+</kw>
+<kw name="Log Response Details" owner="redfish_keywords">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.612070" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.612070" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>\n=== 响应详情 ===</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.612070" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>状态码: ${response.status_code}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.612070" elapsed="0.000996"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>响应时间: ${response.elapsed.total_seconds()}秒</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.613066" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>数据ID: ${json_data.get('Id', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.613066" elapsed="0.000995"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>名称: ${json_data.get('Name', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.614061" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>状态: ${json_data.get('Status', {}).get('State', 'N/A')}/${json_data.get('Status', {}).get('Health', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.614061" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>================\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.614061" elapsed="0.000998"/>
+</kw>
+<arg>${response}</arg>
+<doc>记录响应详情</doc>
+<status status="PASS" start="2026-03-19T18:03:45.612070" elapsed="0.002989"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.587148" elapsed="0.027911"/>
+</kw>
+<kw name="那么响应应包含所有必需字段">
+<kw name="Validate Response Has Required Fields" owner="redfish_keywords">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.615059" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.615059" elapsed="0.000000"/>
+</kw>
+<for flavor="IN">
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000000"/>
+</kw>
+<var name="${field}">@odata.id</var>
+<status status="PASS" start="2026-03-19T18:03:45.615059" elapsed="0.000997"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000000"/>
+</kw>
+<var name="${field}">@odata.type</var>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000000"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000996"/>
+</kw>
+<var name="${field}">Id</var>
+<status status="PASS" start="2026-03-19T18:03:45.616056" elapsed="0.000996"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</kw>
+<var name="${field}">Name</var>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</kw>
+<var name="${field}">Description</var>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000000"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.618048" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000996"/>
+</kw>
+<var name="${field}">Status</var>
+<status status="PASS" start="2026-03-19T18:03:45.617052" elapsed="0.000996"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.618048" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.618048" elapsed="0.000000"/>
+</kw>
+<var name="${field}">FirmwareVersion</var>
+<status status="PASS" start="2026-03-19T18:03:45.618048" elapsed="0.000000"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.618048" elapsed="0.000999"/>
+</kw>
+<var name="${field}">Manufacturer</var>
+<status status="PASS" start="2026-03-19T18:03:45.618048" elapsed="0.000999"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000000"/>
+</kw>
+<var name="${field}">Model</var>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000000"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000998"/>
+</kw>
+<var name="${field}">SerialNumber</var>
+<status status="PASS" start="2026-03-19T18:03:45.619047" elapsed="0.000998"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.620045" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>${field}</arg>
+<arg>msg=响应缺少字段: ${field}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.620045" elapsed="0.000000"/>
+</kw>
+<var name="${field}">PartNumber</var>
+<status status="PASS" start="2026-03-19T18:03:45.620045" elapsed="0.000000"/>
+</iter>
+<var>${field}</var>
+<value>@{required_fields}</value>
+<status status="PASS" start="2026-03-19T18:03:45.615059" elapsed="0.004986"/>
+</for>
+<arg>${RESPONSE}</arg>
+<arg>${EXPECTED_FIELDS}</arg>
+<doc>验证响应包含必需字段</doc>
+<status status="PASS" start="2026-03-19T18:03:45.615059" elapsed="0.004986"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.615059" elapsed="0.004986"/>
+</kw>
+<kw name="并且Status字段应显示正确状态">
+<kw name="Validate Status Fields" owner="redfish_keywords">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.620589" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.620589" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json_data}</arg>
+<arg>Status</arg>
+<arg>msg=响应缺少Status字段</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.620589" elapsed="0.000969"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${json_data}</arg>
+<arg>Status</arg>
+<arg>msg=响应缺少Status字段</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.620589" elapsed="0.000969"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.621558" level="INFO">${status} = {'Health': 'OK', 'Oem': {'Public': {'FaultDescription': '', 'Severity': 'Informational'}}, 'State': 'Enabled'}</msg>
+<var>${status}</var>
+<arg>${json_data}</arg>
+<arg>Status</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.621558" elapsed="0.000000"/>
+</kw>
+<for flavor="IN">
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${status}</arg>
+<arg>${key}</arg>
+<arg>msg=Status字段缺少子字段: ${key}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.621558" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${status}</arg>
+<arg>${key}</arg>
+<arg>msg=Status字段缺少子字段: ${key}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.621558" elapsed="0.000000"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.622558" level="INFO">${expected_value} = Enabled</msg>
+<var>${expected_value}</var>
+<arg>${expected_status}</arg>
+<arg>${key}</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.621558" elapsed="0.001000"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.622558" level="INFO">${actual_value} = Enabled</msg>
+<var>${actual_value}</var>
+<arg>${status}</arg>
+<arg>${key}</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.622558" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${actual_value}</arg>
+<arg>${expected_value}</arg>
+<arg>msg=Status.${key}的值应为'${expected_value}'，实际为'${actual_value}'</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.622558" elapsed="0.000000"/>
+</kw>
+<arg>Should Be Equal As Strings</arg>
+<arg>${actual_value}</arg>
+<arg>${expected_value}</arg>
+<arg>msg=Status.${key}的值应为'${expected_value}'，实际为'${actual_value}'</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.622558" elapsed="0.000000"/>
+</kw>
+<var name="${key}">State</var>
+<status status="PASS" start="2026-03-19T18:03:45.621558" elapsed="0.001000"/>
+</iter>
+<iter>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${status}</arg>
+<arg>${key}</arg>
+<arg>msg=Status字段缺少子字段: ${key}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.622558" elapsed="0.000000"/>
+</kw>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${status}</arg>
+<arg>${key}</arg>
+<arg>msg=Status字段缺少子字段: ${key}</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.622558" elapsed="0.000994"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.623552" level="INFO">${expected_value} = OK</msg>
+<var>${expected_value}</var>
+<arg>${expected_status}</arg>
+<arg>${key}</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.623552" elapsed="0.000000"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.623552" level="INFO">${actual_value} = OK</msg>
+<var>${actual_value}</var>
+<arg>${status}</arg>
+<arg>${key}</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.623552" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${actual_value}</arg>
+<arg>${expected_value}</arg>
+<arg>msg=Status.${key}的值应为'${expected_value}'，实际为'${actual_value}'</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.623552" elapsed="0.000000"/>
+</kw>
+<arg>Should Be Equal As Strings</arg>
+<arg>${actual_value}</arg>
+<arg>${expected_value}</arg>
+<arg>msg=Status.${key}的值应为'${expected_value}'，实际为'${actual_value}'</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.623552" elapsed="0.000000"/>
+</kw>
+<var name="${key}">Health</var>
+<status status="PASS" start="2026-03-19T18:03:45.622558" elapsed="0.000994"/>
+</iter>
+<var>${key}</var>
+<value>@{expected_status.keys()}</value>
+<status status="PASS" start="2026-03-19T18:03:45.621558" elapsed="0.001994"/>
+</for>
+<arg>${RESPONSE}</arg>
+<arg>${EXPECTED_STATUS}</arg>
+<doc>验证Status字段的值</doc>
+<status status="PASS" start="2026-03-19T18:03:45.620589" elapsed="0.002963"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.620554" elapsed="0.002998"/>
+</kw>
+<doc>验证PCIeDevice接口返回的数据结构符合预期</doc>
+<tag>api</tag>
+<tag>functional</tag>
+<tag>pcie</tag>
+<status status="PASS" start="2026-03-19T18:03:45.587148" elapsed="0.036404"/>
+</test>
+<test id="s1-s1-s1-t3" name="验证PCIeDevice接口数据完整性" line="31">
+<kw name="当用户请求PCIeDevice接口">
+<kw name="Get Redfish Resource" owner="redfish_keywords">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-19T18:03:45.646476" level="INFO">GET Request : url=https://172.14.8.101/redfish/v1/Chassis/1/PCIeDevices/11 
+ path_url=/redfish/v1/Chassis/1/PCIeDevices/11 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Basic YWRtaW46UGFzc3dvcmRAXw=='} 
+ body=None 
+ </msg>
+<msg time="2026-03-19T18:03:45.646476" level="INFO">GET Response : url=https://172.14.8.101/redfish/v1/Chassis/1/PCIeDevices/11 
+ status=200, reason=OK 
+ headers={'Allow': 'GET', 'Pragma': 'no-cache', 'Cache-Control': 'no-Store,no-Cache', 'Content-Type': 'application/json', 'Date': 'Thu, 19 Mar 2026 10:06:42 GMT', 'OData-Version': '4.0', 'Content-Length': '1369', 'Accept-Ranges': 'bytes', 'Server': 'web server', 'X-Download-Options': 'noopen', 'X-Permitted-Cross-Domain-Policies': 'value', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff', 'X-XSS-Protection': 'nosniff', 'Content-Security-Policy': "default-src 'self';         script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' wss://*:* ws://*:*; img-src 'self' data:;         frame-src 'self'; font-src 'self' data:; object-src 'self'; style-src 'self' 'unsafe-inline';         frame-ancestors 'none'; worker-src blob: * 'data';", 'Strict-Transport-Security': 'value', 'X-Frame-Options': 'DENY'} 
+ body={
+  "@odata.context": "/redfish/v1/$metadata#PCIeDevice.PCIeDevice",
+  "@odata.id": "/redfish/v1/Chassis/1/PCIeDevices/11",
+  "@odata.type": "#PCIeDevice.v1_5_0.PCIeDevice",
+  "CardManufacturer": "Vastai",
+  "CardModel": "GPU-VA16-128GB-FHFL",
+  "Description": "PCIe-11",
+  "FirmwareVersion": "VA16-3.3.5R 7ba7",
+  "Id": "PCIeCard11",
+  "Links": {
+    "Chassis": [
+      {
+        "@odata.id": "/redfish/v1/Chassis/1"
+      }
+    ],
+    "PCIeFunctions": [
+      {
+        "@odata.id": "/redfish/v1/Chassis/1/PCIeDevices/11/Functions/1"
+      }
+    ]
+  },
+  "Manufacturer": "Vastai",
+  "Model": "GPU-VA16-128GB-FHFL",
+  "Name": "GPU-VA16-128GB-FHFL",
+  "Oem": {
+    "Public": {
+      "ChipManufacturer": "Vastai",
+      "ChipModel": "SV102",
+      "CompletionCode": 0,
+      "Description": "Success",
+      "DeviceLocator": "PCIe Card11",
+      "MemorySizeMiB": 131072,
+      "MezzSlot": null,
+      "PCIeCardType": "GPU",
+      "Position": 11,
+      "PowerCapacityWatts": 150,
+      "PowerWatts": 23,
+      "SlotMapping": null,
+      "SlotNumber": 11
+    }
+  },
+  "PCIeInterface": {
+    "LanesInUse": 4,
+    "MaxLanes": 4
+  },
+  "PartNumber": "PBV3XFMC8940",
+  "SerialNumber": "FCBY53700196",
+  "Status": {
+    "Health": "OK",
+    "Oem": {
+      "Public": {
+        "FaultDescription": "",
+        "Severity": "Informational"
+      }
+    },
+    "State": "Enabled"
+  }
+} 
+ </msg>
+<msg time="2026-03-19T18:03:45.647472" level="INFO">C:\Users\xys47339\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host '172.14.8.101'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-19T18:03:45.647472" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>redfish_session</arg>
+<arg>${endpoint}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.624548" elapsed="0.022924"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-03-19T18:03:45.647472" elapsed="0.000000"/>
+</return>
+<msg time="2026-03-19T18:03:45.647472" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${PCIEDEVICE_ENDPOINT}</arg>
+<doc>获取Redfish资源</doc>
+<status status="PASS" start="2026-03-19T18:03:45.624548" elapsed="0.022924"/>
+</kw>
+<kw name="Set Test Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.647472" level="INFO">${RESPONSE} = &lt;Response [200]&gt;</msg>
+<arg>${RESPONSE}</arg>
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.647472" elapsed="0.000000"/>
+</kw>
+<kw name="Log Response Details" owner="redfish_keywords">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.648469" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.647472" elapsed="0.000997"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>\n=== 响应详情 ===</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.648469" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>状态码: ${response.status_code}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.648469" elapsed="0.000993"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>响应时间: ${response.elapsed.total_seconds()}秒</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.649462" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>数据ID: ${json_data.get('Id', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.649462" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>名称: ${json_data.get('Name', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.649462" elapsed="0.001000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>状态: ${json_data.get('Status', {}).get('State', 'N/A')}/${json_data.get('Status', {}).get('Health', 'N/A')}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.650462" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>================\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.650462" elapsed="0.000000"/>
+</kw>
+<arg>${response}</arg>
+<doc>记录响应详情</doc>
+<status status="PASS" start="2026-03-19T18:03:45.647472" elapsed="0.002990"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.624548" elapsed="0.025914"/>
+</kw>
+<kw name="那么@odata.id字段应匹配端点">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.651460" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${RESPONSE.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.651460" elapsed="0.000000"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.651460" level="INFO">${odata_id} = /redfish/v1/Chassis/1/PCIeDevices/11</msg>
+<var>${odata_id}</var>
+<arg>${json_data}</arg>
+<arg>@odata.id</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.651460" elapsed="0.000000"/>
+</kw>
+<kw name="Should Contain" owner="BuiltIn">
+<arg>${odata_id}</arg>
+<arg>/redfish/v1/Chassis/1/PCIeDevices/11</arg>
+<arg>msg=@odata.id字段不匹配预期端点</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.651460" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.650462" elapsed="0.000998"/>
+</kw>
+<kw name="并且@odata.type字段应包含PCIeDevice">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-19T18:03:45.652458" level="INFO">${json_data} = {'@odata.context': '/redfish/v1/$metadata#PCIeDevice.PCIeDevice', '@odata.id': '/redfish/v1/Chassis/1/PCIeDevices/11', '@odata.type': '#PCIeDevice.v1_5_0.PCIeDevice', 'CardManufacturer': 'Vastai', 'Ca...</msg>
+<var>${json_data}</var>
+<arg>${RESPONSE.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.652458" elapsed="0.000000"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-03-19T18:03:45.652458" level="INFO">${odata_type} = #PCIeDevice.v1_5_0.PCIeDevice</msg>
+<var>${odata_type}</var>
+<arg>${json_data}</arg>
+<arg>@odata.type</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.652458" elapsed="0.000000"/>
+</kw>
+<kw name="Should Contain" owner="BuiltIn">
+<arg>${odata_type}</arg>
+<arg>PCIeDevice</arg>
+<arg>msg=@odata.type字段不包含PCIeDevice</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.652458" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-03-19T18:03:45.652458" elapsed="0.000000"/>
+</kw>
+<doc>验证PCIeDevice接口返回的数据完整性</doc>
+<tag>api</tag>
+<tag>functional</tag>
+<tag>pcie</tag>
+<status status="PASS" start="2026-03-19T18:03:45.624548" elapsed="0.027910"/>
+</test>
+<kw name="清理测试环境" type="TEARDOWN">
+<kw name="Delete All Sessions" owner="RequestsLibrary">
+<msg time="2026-03-19T18:03:45.653452" level="INFO">Deleting All Sessions</msg>
+<doc>Removes all the session objects</doc>
+<status status="PASS" start="2026-03-19T18:03:45.653452" elapsed="0.000000"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>PCIeDevice接口测试执行完成！</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-19T18:03:45.653452" elapsed="0.000000"/>
+</kw>
+<doc>测试套件清理</doc>
+<status status="PASS" start="2026-03-19T18:03:45.653452" elapsed="0.000000"/>
+</kw>
+<doc>Redfish API测试 - PCIeDevice接口</doc>
+<status status="PASS" start="2026-03-19T18:03:45.289905" elapsed="0.363547"/>
+</suite>
+<status status="PASS" start="2026-03-19T18:03:45.287912" elapsed="0.366536"/>
+</suite>
+<status status="PASS" start="2026-03-19T18:03:45.262996" elapsed="0.391452"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="3" fail="0" skip="0">api</stat>
+<stat pass="2" fail="0" skip="0">functional</stat>
+<stat pass="3" fail="0" skip="0">pcie</stat>
+<stat pass="1" fail="0" skip="0">smoke</stat>
+</tag>
+<suite>
+<stat name="所有PCIeDevice测试" id="s1" pass="3" fail="0" skip="0">所有PCIeDevice测试</stat>
+<stat name="Testcases" id="s1-s1" pass="3" fail="0" skip="0">所有PCIeDevice测试.Testcases</stat>
+<stat name="Test Pcie Device" id="s1-s1-s1" pass="3" fail="0" skip="0">所有PCIeDevice测试.Testcases.Test Pcie Device</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

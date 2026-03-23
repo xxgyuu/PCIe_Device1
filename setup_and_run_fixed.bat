@@ -11,7 +11,7 @@ echo   - Network connection (for installing dependencies)
 echo ========================================
 
 echo Checking Python environment...
-where python >nul 2>nul
+python --version >nul 2>nul
 if errorlevel 1 (
     echo Error: Python not found, please ensure Python is installed and added to PATH
     echo.
@@ -57,16 +57,14 @@ if not exist "testcases\run_all_tests.robot" (
 )
 
 echo Checking robot command...
-where robot >nul 2>nul
+python -m robot --version >nul 2>nul
 if errorlevel 1 (
-    echo robot command not in PATH, trying python -m robot...
-    set ROBOT_CMD=python -m robot
-) else (
-    set ROBOT_CMD=robot
+    echo robot command not available, installing robotframework...
+    python -m pip install robotframework
 )
 
 echo Executing test...
-%ROBOT_CMD% --outputdir results --log log.html --report report.html testcases/run_all_tests.robot
+python -m robot --outputdir results --log log.html --report report.html testcases/run_all_tests.robot
 
 if errorlevel 1 (
     echo.

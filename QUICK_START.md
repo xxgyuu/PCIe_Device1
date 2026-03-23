@@ -78,3 +78,90 @@ robot --include functional testcases/test_pcie_device.robot
 Log All Response Fields    ${RESPONSE}
 ```
 或在 `keywords/redfish_keywords.robot` 中临时添加该关键字调用。
+
+## 7. Jenkins CI/CD 集成
+
+### 7.1 环境要求
+Jenkins节点必须安装：
+1. **Python 3.6+** - 测试框架依赖
+2. **Git** - 代码版本控制
+
+### 7.2 在Jenkins中配置Python
+
+#### 方法一：在节点上安装Python
+1. 下载并安装Python 3.6+
+2. **重要**：安装时勾选 "Add Python to PATH"
+3. 验证安装：
+   ```batch
+   python --version
+   python -m pip --version
+   ```
+
+#### 方法二：使用Jenkins Python工具（推荐）
+1. Jenkins管理 → 全局工具配置
+2. 添加Python安装：
+   - 名称：Python3
+   - 自动安装：勾选
+   - 从python.org安装：勾选
+   - 版本：选择3.x
+3. 在构建步骤中引用Python工具
+
+#### 方法三：在批处理脚本中设置PATH
+如果Python安装在非标准位置，修改 `setup_and_run.bat` 开头：
+```batch
+@echo off
+:: 设置Python路径（根据实际安装位置修改）
+set PATH=C:\Python39;C:\Python39\Scripts;%PATH%
+
+echo ========================================
+echo Redfish API 测试框架安装与运行脚本
+echo ========================================
+...
+```
+
+### 7.3 Jenkins构建步骤配置
+1. 创建自由风格项目
+2. 源码管理：Git
+   - 仓库URL：`https://github.com/xxgyuu/PCIe_Device1.git`
+3. 构建触发器：按需配置
+4. 构建环境：按需配置
+5. 构建步骤：
+   - **执行Windows批处理命令**：
+     ```batch
+     setup_and_run.bat
+     ```
+6. 构建后操作：
+   - **Allure报告**（如已安装Allure插件）：
+     - 路径：`allure-results`
+     - 报告路径：`allure-report`
+
+### 7.4 常见Jenkins构建问题
+
+#### 问题：Python未找到
+**症状**：`'python' 不是内部或外部命令`
+**解决**：
+1. 确保Python已安装并添加到PATH
+2. 或在批处理脚本开头设置PATH
+
+#### 问题：依赖安装失败
+**症状**：`pip install` 失败
+**解决**：
+1. 检查网络连接
+2. 尝试使用国内镜像源（修改 `setup_and_run.bat`）：
+   ```batch
+   python -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+   ```
+
+#### 问题：测试连接失败
+**症状**：`ConnectionError` 或 `Timeout`
+**解决**：
+1. 检查BMC IP是否可达
+2. 确认防火墙设置
+3. 在 `variables/redfish_variables.py` 中更新IP地址
+
+### 7.5 自动化构建示例
+完整构建流程：
+1. 拉取代码 → 安装依赖 → 运行测试 → 生成报告
+2. 可通过 `testcases/run_all_tests.robot` 运行所有测试
+3. 测试结果输出到 `results/` 目录
+4. Allure报告提供详细的测试分析

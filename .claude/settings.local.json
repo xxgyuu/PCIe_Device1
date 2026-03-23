@@ -12,7 +12,16 @@
       "Bash(robot --dryrun run_tests.robot)",
       "Bash(robot --dryrun --outputdir results testcases/run_all_tests.robot)",
       "Bash(timeout 30 robot --outputdir results testcases/run_all_tests.robot)",
-      "Bash(robot --dryrun testcases/run_all_tests.robot)"
+      "Bash(robot --dryrun testcases/run_all_tests.robot)",
+      "Bash(setup_and_run.bat)",
+      "Bash(cmd /c \"D:\\\\work1\\\\setup_and_run.bat\")",
+      "Bash(cmd /c \"cd /d D:\\\\work1 && setup_and_run.bat\")",
+      "Bash(cd /d D:work1)",
+      "Bash(cmd /c \"setup_and_run.bat\")",
+      "Bash(cmd //c \"cd /d D:\\\\work1 && setup_and_run.bat\")",
+      "Bash(cmd //c \"D:\\\\work1\\\\setup_and_run.bat\")",
+      "Bash(powershell -Command \"cd 'D:\\\\work1'; cmd /c 'setup_and_run.bat'\")",
+      "Bash(bash -c \"cmd //c setup_and_run_fixed.bat\")"
     ]
   }
 }

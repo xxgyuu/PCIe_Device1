@@ -106,17 +106,17 @@ if not defined PYTHON_CMD (
 echo Found Python at: %PYTHON_CMD%
 
 echo Checking Python version...
-python -c "import sys; exit(0 if sys.version_info >= (3, 6) else 1)" >nul 2>nul
+%PYTHON_CMD% -c "import sys; exit(0 if sys.version_info >= (3, 6) else 1)" >nul 2>nul
 if errorlevel 1 (
     echo Error: Python 3.6 or higher is required
-    python --version
+    %PYTHON_CMD% --version
     exit /b 1
 )
 
-python --version
+%PYTHON_CMD% --version
 
 echo Installing Python dependencies...
-python -m pip install -r requirements.txt
+%PYTHON_CMD% -m pip install -r requirements.txt
 
 if errorlevel 1 (
     echo Error: Dependency installation failed
@@ -142,8 +142,8 @@ if not exist "testcases\run_all_tests.robot" (
 echo Checking robot command...
 where robot >nul 2>nul
 if errorlevel 1 (
-    echo robot command not in PATH, trying python -m robot...
-    set ROBOT_CMD=python -m robot
+    echo robot command not in PATH, trying %PYTHON_CMD% -m robot...
+    set ROBOT_CMD=%PYTHON_CMD% -m robot
 ) else (
     set ROBOT_CMD=robot
 )

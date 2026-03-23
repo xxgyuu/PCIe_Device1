@@ -49,6 +49,7 @@ REM Try common installation paths
 if not defined PYTHON_CMD (
     echo Checking common Python installation paths...
     for %%p in (
+        C:\Users\xys47339\AppData\Local\Programs\Python\Python311\python.exe,
         C:\Python311\python.exe,
         C:\Python310\python.exe,
         C:\Python39\python.exe,

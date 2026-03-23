@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.2 (Python 3.11.4 on win32)" generated="20260320 16:50:28.115" rpa="false" schemaversion="3">
+<suite id="s1" name="Robot Interactive Console" source="c:\Users\xys47339\.vscode\extensions\robocorp.robotframework-lsp-1.13.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
+<test id="s1-t1" name="Default Task/Test" line="5">
+<kw name="Interpreter Main Loop" library="MainLoop">
+<kw name="当用户请求PCIeDevice接口">
+<msg timestamp="20260320 16:50:30.492" level="FAIL">No keyword with name '当用户请求PCIeDevice接口' found.</msg>
+<status status="FAIL" starttime="20260320 16:50:30.492" endtime="20260320 16:50:30.492"/>
+</kw>
+<kw name="那么接口应返回200状态码">
+<status status="NOT RUN" starttime="20260320 16:50:30.493" endtime="20260320 16:50:30.493"/>
+</kw>
+<status status="PASS" starttime="20260320 16:50:28.128" endtime="20260320 16:50:36.622"/>
+</kw>
+<status status="PASS" starttime="20260320 16:50:28.128" endtime="20260320 16:50:36.623"/>
+</test>
+<status status="PASS" starttime="20260320 16:50:28.117" endtime="20260320 16:50:36.623"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Robot Interactive Console">Robot Interactive Console</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

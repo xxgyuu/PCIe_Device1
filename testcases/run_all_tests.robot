@@ -4,7 +4,7 @@ Library    Process
 Library    OperatingSystem
 
 *** Variables ***
-${ROBOT_COMMAND}    robot
+${ROBOT_COMMAND}    python -m robot
 ${SUBTESTS_DIR}    subtests
 
 *** Test Cases ***

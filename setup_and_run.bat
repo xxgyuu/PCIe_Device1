@@ -14,79 +14,69 @@ REM Try to find Python in common locations
 set PYTHON_CMD=
 
 REM First, try where command to find Python in PATH
-where python >nul 2>nul
+echo Checking PATH for python...
+where python 2>nul
 if not errorlevel 1 (
-    set PYTHON_CMD=python
+    for /f "delims=" %%i in ('where python 2^>nul') do (
+        set PYTHON_CMD=%%i
+        goto :found_python
+    )
+)
+:found_python
+if defined PYTHON_CMD (
+    echo Found python at: %PYTHON_CMD%
+) else (
+    echo Python not found in PATH
 )
 
 REM If not found, try python3
 if not defined PYTHON_CMD (
-    where python3 >nul 2>nul
+    echo Checking PATH for python3...
+    where python3 2>nul
     if not errorlevel 1 (
-        set PYTHON_CMD=python3
+        for /f "delims=" %%i in ('where python3 2^>nul') do (
+            set PYTHON_CMD=%%i
+            goto :found_python3
+        )
     )
+)
+:found_python3
+if defined PYTHON_CMD (
+    echo Found python3 at: %PYTHON_CMD%
 )
 
 REM Try common installation paths
 if not defined PYTHON_CMD (
-    if exist "C:\Python311\python.exe" (
-        set PYTHON_CMD=C:\Python311\python.exe
-        set PATH=C:\Python311;C:\Python311\Scripts;%PATH%
+    echo Checking common Python installation paths...
+    for %%p in (
+        C:\Python311\python.exe,
+        C:\Python310\python.exe,
+        C:\Python39\python.exe,
+        "C:\Program Files\Python311\python.exe",
+        "C:\Program Files\Python310\python.exe",
+        "C:\Program Files\Python39\python.exe",
+        "C:\Program Files (x86)\Python311\python.exe",
+        "C:\Program Files (x86)\Python310\python.exe"
+    ) do (
+        if exist %%p (
+            set PYTHON_CMD=%%p
+            goto :found_python_path
+        )
     )
 )
-
-if not defined PYTHON_CMD (
-    if exist "C:\Python310\python.exe" (
-        set PYTHON_CMD=C:\Python310\python.exe
-        set PATH=C:\Python310;C:\Python310\Scripts;%PATH%
-    )
-)
-
-if not defined PYTHON_CMD (
-    if exist "C:\Python39\python.exe" (
-        set PYTHON_CMD=C:\Python39\python.exe
-        set PATH=C:\Python39;C:\Python39\Scripts;%PATH%
-    )
-)
-
-REM Check Program Files for Python installations
-if not defined PYTHON_CMD (
-    if exist "C:\Program Files\Python311\python.exe" (
-        set PYTHON_CMD=C:\Program Files\Python311\python.exe
-        set PATH=C:\Program Files\Python311;C:\Program Files\Python311\Scripts;%PATH%
-    )
-)
-
-if not defined PYTHON_CMD (
-    if exist "C:\Program Files\Python310\python.exe" (
-        set PYTHON_CMD=C:\Program Files\Python310\python.exe
-        set PATH=C:\Program Files\Python310;C:\Program Files\Python310\Scripts;%PATH%
-    )
-)
-
-REM Check for Python in Program Files (x86)
-if not defined PYTHON_CMD (
-    if exist "C:\Program Files (x86)\Python311\python.exe" (
-        set PYTHON_CMD=C:\Program Files (x86)\Python311\python.exe
-        set PATH=C:\Program Files (x86)\Python311;C:\Program Files (x86)\Python311\Scripts;%PATH%
-    )
+:found_python_path
+if defined PYTHON_CMD (
+    echo Found Python at: %PYTHON_CMD%
 )
 
 REM Allow override via environment variable
 if not defined PYTHON_CMD (
     if defined PYTHON_HOME (
+        echo Checking PYTHON_HOME environment variable...
         if exist "%PYTHON_HOME%\python.exe" (
             set PYTHON_CMD=%PYTHON_HOME%\python.exe
             set PATH=%PYTHON_HOME%;%PYTHON_HOME%\Scripts;%PATH%
         )
-    )
-)
-
-REM If still not found, check user-specific paths (for non-Jenkins environments)
-if not defined PYTHON_CMD (
-    if exist "C:\Users\xys47339\AppData\Local\Programs\Python\Python311\python.exe" (
-        set PYTHON_CMD=C:\Users\xys47339\AppData\Local\Programs\Python\Python311\python.exe
-        set PATH=C:\Users\xys47339\AppData\Local\Programs\Python\Python311;C:\Users\xys47339\AppData\Local\Programs\Python\Python311\Scripts;%PATH%
     )
 )
 
@@ -100,6 +90,10 @@ if not defined PYTHON_CMD (
     echo   4. Use Jenkins "Python" tool configuration
     echo.
     echo Current PATH: %PATH%
+    echo.
+    echo Debug info:
+    where python 2>nul || echo python not found in PATH
+    where python3 2>nul || echo python3 not found in PATH
     exit /b 1
 )
 
